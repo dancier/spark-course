@@ -1,0 +1,83 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
+
+# Disable password authentication fo root user
+ssh_pwauth: true
+
+groups:
+  - admingroup: [root, pupil]
+
+users:
+  - default
+  - name: pupil
+    # mkpasswd --method=SHA-512 --rounds=4096
+    passwd: $6$rounds=4096$s9j6iCn2cp22oWjp$DqR2i3temYAo2u6OGu0P2D/vwYTxhUdc2gWgodX2XwvpJQ4gwtWrWA.cewFkdjh6ZWA51mu3x9bGC7azSB12e/
+    home: /home/pupil
+    shell: /bin/bash
+    lock_passwd: false
+
+# Install required packages
+packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg-agent
+  - software-properties-common
+  - openjdk-19-jdk-headless
+  - python3-pip
+
+write_files:
+    - path: /etc/environment
+      permissions: 0644
+      append: true
+      content: |
+        SPARK_HOME=/root/spark
+
+    - path: /etc/profile.d/Z99-spark.sh
+      permissions: 0644
+      append: true
+      content: |
+        PATH=$PATH:/root/spark/bin
+        SPARKY_HOME=/root/spark
+    # https://medium.com/analytics-vidhya/auto-start-jupyter-lab-on-machine-boot-e4f6b3296034
+    - path: /opt/jupyterlab/etc/systemd/jupyterlab.service
+      permissions: 0644
+      content: |
+        [Unit]
+        Description=JupyterLab
+        After=syslog.target network.target
+        [Service]
+        User=root
+        Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/root/spark/bin,SPARK_HOME=/root/spark"
+        ExecStart=/usr/local/bin/jupyter lab --ip 0.0.0.0 --port 80 --no-browser --allow-root --notebook-dir=/home/pupil
+
+        [Install]
+        WantedBy=multi-user.target
+    - path: /root/.jupyter/jupyter_server_config.json
+      content: |
+        {
+          "IdentityProvider": {
+            "hashed_password": "argon2:$argon2id$v=19$m=10240,t=10,p=8$8PMGIvdZKanQNYd9h9WlEw$qCISHO2cRn0z2cpeKKnMuMeGCNfEbVsxHSc2hmjIn1E"
+          }
+        }
+
+
+# Install Docker + Docker Compose & Start Docker
+runcmd:
+  # Add repository
+  - cd /root
+  - echo `pwd`
+  - wget -O spark.tgz https://dlcdn.apache.org/spark/spark-3.4.1/spark-3.4.1-bin-hadoop3.tgz
+  - tar xzvf spark.tgz 
+  - ln -s spark-3.4.1-bin-hadoop3/ spark
+  - pip install findspark pyhive delta-spark jupyter
+  - ln -s /opt/jupyterlab/etc/systemd/jupyterlab.service /etc/systemd/system/jupyterlab.service
+  - systemctl daemon-reload
+  - systemctl enable jupyterlab.service
+  - systemctl start jupyterlab.service
+  - systemctl status jupyterlab.service
+
+
+final_message: "The system is ready, after $UPTIME seconds"

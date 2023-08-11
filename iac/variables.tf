@@ -17,6 +17,11 @@ variable "ssh_public_key_name" {
   default = "default"
 }
 
+variable "location" {
+  type = string
+  default = "nbg1"
+}
+
 variable "pupil-machine" {
   type        = map(any)
   description = "One Machine defintion for one pupil for the course"
@@ -24,7 +29,6 @@ variable "pupil-machine" {
     name        = "pupil-01"
     server_type = "cx11"
     image       = "ubuntu-22.04"
-    location    = "nbg1"
     backups     = false
   }
 }
