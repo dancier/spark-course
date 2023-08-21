@@ -78,6 +78,8 @@ runcmd:
   - systemctl enable jupyterlab.service
   - systemctl start jupyterlab.service
   - systemctl status jupyterlab.service
+  - cd /home/pupil
+  - git clone https://github.com/dancier/spark-course.git
 
 
 final_message: "The system is ready, after $UPTIME seconds"
