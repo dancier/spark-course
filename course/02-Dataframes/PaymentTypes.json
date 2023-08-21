@@ -1,0 +1,6 @@
+{"PaymentTypeID":1,"PaymentType":"Credit Card"}
+{"PaymentTypeID":2,"PaymentType":"Cash"}
+{"PaymentTypeID":3,"PaymentType":"No Charge"}
+{"PaymentTypeID":4,"PaymentType":"Dispute"}
+{"PaymentTypeID":5,"PaymentType":"Unknown"}
+{"PaymentTypeID":6,"PaymentType":"Voided Trip"}
