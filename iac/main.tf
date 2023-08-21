@@ -11,6 +11,11 @@ terraform {
   required_version = ">= 1.0"
 }
 
+resource "hcloud_ssh_key" "ssh-key" {
+  name = var.ssh_public_key_name
+  public_key = file("~/.ssh/id_rsa.pub")
+}
+
 variable "hetznerdns_token" {}
 
 provider "hetznerdns" {
@@ -31,6 +36,9 @@ resource "hetznerdns_zone" "bin-ich-tot-de" {
   ttl  = 60
 }
 
+
+##### Pupil A
+
 resource "hetznerdns_record" "pupil-a" {
     zone_id = hetznerdns_zone.bin-ich-tot-de.id
     name = "pupil-a"
@@ -45,10 +53,6 @@ resource "hcloud_rdns" "master" {
   dns_ptr    = "pupil-a.bin-ich-tot.de"
 }
 
-resource "hcloud_ssh_key" "ssh-key" {
-  name = var.ssh_public_key_name
-  public_key = file("~/.ssh/id_rsa.pub")
-}
 
 resource "hcloud_server" "pupil-a" {
   name        = "pupil-a"
