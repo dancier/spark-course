@@ -27,6 +27,7 @@ packages:
   - software-properties-common
   - openjdk-19-jdk-headless
   - python3-pip
+  - unzip
 
 write_files:
     - path: /etc/environment
