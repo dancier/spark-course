@@ -27,7 +27,7 @@ variable "pupil-machine" {
   description = "One Machine defintion for one pupil for the course"
   default = {
     name        = "pupil-01"
-    server_type = "cx11"
+    server_type = "cx21"
     image       = "ubuntu-22.04"
     backups     = false
   }
