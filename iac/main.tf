@@ -47,7 +47,7 @@ resource "hetznerdns_record" "pupil-a" {
     ttl= 60
 }
 
-resource "hcloud_rdns" "master" {
+resource "hcloud_rdns" "pupil-a-reverse" {
   server_id  = hcloud_server.pupil-a.id
   ip_address = hcloud_server.pupil-a.ipv4_address
   dns_ptr    = "pupil-a.bin-ich-tot.de"
@@ -67,3 +67,34 @@ resource "hcloud_server" "pupil-a" {
 output "pupil-a-ip" {
   value = hcloud_server.pupil-a.ipv4_address
 }
+
+
+#
+
+##### Pupil Olli
+
+resource "hetznerdns_record" "olli" {
+    zone_id = hetznerdns_zone.bin-ich-tot-de.id
+    name = "olli"
+    value = hcloud_server.olli.ipv4_address
+    type = "A"
+    ttl= 60
+}
+
+resource "hcloud_rdns" "ollirevers" {
+  server_id  = hcloud_server.olli.id
+  ip_address = hcloud_server.olli.ipv4_address
+  dns_ptr    = "olli.bin-ich-tot.de"
+}
+
+
+resource "hcloud_server" "olli" {
+  name        = "olli"
+  image       = var.pupil-machine.image
+  server_type = var.pupil-machine.server_type
+  location    = var.location
+  backups     = var.pupil-machine.backups
+  ssh_keys    = [var.ssh_public_key_name]
+  user_data = templatefile("${path.module}/pupil-user-data.yaml", {})
+}
+

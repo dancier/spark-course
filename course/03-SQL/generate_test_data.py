@@ -11,7 +11,7 @@ kunden = [
     },
     {
         "id": "1",
-        "name": "Scharrenberch
+        "name": "Scharrenberch"
     }
 ]
 

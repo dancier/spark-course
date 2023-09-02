@@ -24,7 +24,7 @@ variable "location" {
 
 variable "pupil-machine" {
   type        = map(any)
-  description = "One Machine defintion for one pupil for the course"
+  description = "One Machine definition for one pupil for the course"
   default = {
     name        = "pupil-01"
     server_type = "cx21"
