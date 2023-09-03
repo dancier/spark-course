@@ -53,7 +53,7 @@ antrag_abgelehnt = [] # check
 Wie können den Vertrag aus verschiedenen Gründen nicht erstellen. Dann verschicken diese Event mit einem Hinweis auf den Grund.
 '''
 
-vertrag_policiert = []
+vertrag_policiert = [] # check
 '''
 VertragsId
 Gültigkeitsstart:
@@ -80,7 +80,20 @@ Enthält alle Kunden die es überhaupt gibt.
 '''
 
 def reagiere_auf_kunde_akzeptiert_vertrag_event(kunde_akzeptiert_vertrags_event):
-    pass
+    # nun wird der vertrag policiert
+    # seltenerweise passiert nix
+    from random import randrange
+    from datetime import timedelta
+    if randrange(1,100) > 97:
+        return
+
+    diese_startzeit = kunde_akzeptiert_vertrags_event["TimeStamp"] + timedelta(days=randrange(1,3))
+                                                                               
+    event = {
+        "VertragsId": kunde_akzeptiert_vertrags_event["VertragsId"],
+        "TimeStamp": diese_startzeit
+    }
+    vertrag_policiert.append(event)
 
 
 def reagiere_auf_vertrag_angeboten_event(vertrag_angeboten_event):
@@ -232,6 +245,30 @@ def main(count):
     
     for i in range(count):
         erzeuge_antrag(random_between(start_ts, end_ts))
+
+    count_of_contracts = len(vertrag_policiert)
+    for i in range(count):
+        from random import randrange
+        from datetime import timedelta
+        # erzeuge einen Schadensfall
+        contract = vertrag_policiert[randrange(1,count_of_contracts-1)]
+        schadens_zeit = contract["TimeStamp"] + timedelta(days=randrange(10, 30))
+        event = {
+            "VertragsId": contract["VertragsId"],
+            "SchadensId": uuid.uuid4(),
+            "Schadenshöhe": randrange(200,2000),
+            "TimeStamp": schadens_zeit
+        }
+        schaden_gemeldet.append(event)
+        # nun werden wir den schaden noch regulieren, aber nur teilweise
+        regulations_zeit = schadens_zeit + timedelta(days=randrange(4, 10))
+        event = {
+            "SchadensId" : event["SchadensId"],
+            "TimeStamp": regulations_zeit
+        }
+        schaden_reguliert.append(event)
+        
+        
     write_files()
 
 def draw_item(classes):
@@ -275,5 +312,6 @@ def write_files():
     data_to_csv_with_filename("antrag_abgelehnt.csv", antrag_abgelehnt)
     data_to_csv_with_filename("kunde_hat_angebot_abgelehnt.csv", kunde_hat_angebot_abgelehnt)
     data_to_csv_with_filename("kunde_hat_angebot_akzeptiert.csv", kunde_hat_angebot_akzeptiert)
-    
-
+    data_to_csv_with_filename("vertrag_policiert.csv", vertrag_policiert)
+    data_to_csv_with_filename("schaden_gemeldet.csv", schaden_gemeldet)
+    data_to_csv_with_filename("schaden_reguliert.csv", schaden_reguliert)
