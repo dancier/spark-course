@@ -73,7 +73,7 @@ runcmd:
   - wget -O spark.tgz https://dlcdn.apache.org/spark/spark-3.4.1/spark-3.4.1-bin-hadoop3.tgz
   - tar xzvf spark.tgz 
   - ln -s spark-3.4.1-bin-hadoop3/ spark
-  - pip install findspark pyhive delta-spark jupyter pandas pyarrow names-generator
+  - pip install findspark pyhive delta-spark jupyter pandas pyarrow names-generator ipydrawio
   - ln -s /opt/jupyterlab/etc/systemd/jupyterlab.service /etc/systemd/system/jupyterlab.service
   - systemctl daemon-reload
   - systemctl enable jupyterlab.service

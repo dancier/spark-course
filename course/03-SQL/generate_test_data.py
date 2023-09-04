@@ -125,7 +125,7 @@ def reagiere_auf_vertrag_angeboten_event(vertrag_angeboten_event):
                 "VertragsId": vertrag_angeboten_event["VertragsId"],
                 "AntragsId": vertrag_angeboten_event["AntragsId"],
                 "Grund": "zu teuer",
-                "Timestamp": diese_startzeit
+                "TimeStamp": diese_startzeit
             }
             kunde_hat_angebot_abgelehnt.append(event)
             # hier geht es für uns nicht mehr weiter
@@ -256,7 +256,7 @@ def main(count):
         event = {
             "VertragsId": contract["VertragsId"],
             "SchadensId": uuid.uuid4(),
-            "Schadenshöhe": randrange(200,2000),
+            "Schadenshoehe": randrange(200,2000),
             "TimeStamp": schadens_zeit
         }
         schaden_gemeldet.append(event)
