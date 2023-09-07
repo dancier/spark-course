@@ -65,7 +65,6 @@ write_files:
         }
 
 
-# Install Docker + Docker Compose & Start Docker
 runcmd:
   # Add repository
   - cd /root

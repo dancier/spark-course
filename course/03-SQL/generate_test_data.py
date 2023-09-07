@@ -72,7 +72,7 @@ kunden = [
     },
     {
         "id": "d55a2ede-4a1a-11ee-8cce-b739d8c6e256",
-        "name": "Scharrenberch"
+        "name": "Olli"
     }
 ]
 '''
@@ -247,7 +247,7 @@ def main(count):
         erzeuge_antrag(random_between(start_ts, end_ts))
 
     count_of_contracts = len(vertrag_policiert)
-    for i in range(count):
+    for i in range(count*2):
         from random import randrange
         from datetime import timedelta
         # erzeuge einen Schadensfall
