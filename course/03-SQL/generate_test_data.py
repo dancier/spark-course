@@ -4,7 +4,7 @@ from names_generator import generate_name
 
 from datetime import datetime
 
-start_ts = datetime.strptime('9/1/2023 1:30 PM', '%m/%d/%Y %I:%M %p')
+start_ts = datetime.strptime('8/1/2023 1:30 PM', '%m/%d/%Y %I:%M %p')
 end_ts = datetime.strptime('9/20/2023 1:30 PM', '%m/%d/%Y %I:%M %p')
 
 ##### Kontext Angebots begin
