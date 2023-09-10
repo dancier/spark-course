@@ -47,12 +47,11 @@ resource "hetznerdns_record" "pupil-a" {
     ttl= 60
 }
 
-resource "hcloud_rdns" "pupil-a-reverse" {
+resource "hcloud_rdns" "pupil-a" {
   server_id  = hcloud_server.pupil-a.id
   ip_address = hcloud_server.pupil-a.ipv4_address
   dns_ptr    = "pupil-a.bin-ich-tot.de"
 }
-
 
 resource "hcloud_server" "pupil-a" {
   name        = "pupil-a"
@@ -61,40 +60,16 @@ resource "hcloud_server" "pupil-a" {
   location    = var.location
   backups     = var.pupil-machine.backups
   ssh_keys    = [var.ssh_public_key_name]
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = false
+  }
   user_data = templatefile("${path.module}/pupil-user-data.yaml", {})
 }
 
 output "pupil-a-ip" {
   value = hcloud_server.pupil-a.ipv4_address
 }
-
-##### Pupil Olli
-
-resource "hetznerdns_record" "olli" {
-    zone_id = hetznerdns_zone.bin-ich-tot-de.id
-    name = "olli"
-    value = hcloud_server.olli.ipv4_address
-    type = "A"
-    ttl= 60
-}
-
-resource "hcloud_rdns" "ollirevers" {
-  server_id  = hcloud_server.olli.id
-  ip_address = hcloud_server.olli.ipv4_address
-  dns_ptr    = "olli.bin-ich-tot.de"
-}
-
-
-resource "hcloud_server" "olli" {
-  name        = "olli"
-  image       = var.pupil-machine.image
-  server_type = var.pupil-machine.server_type
-  location    = var.location
-  backups     = var.pupil-machine.backups
-  ssh_keys    = [var.ssh_public_key_name]
-  user_data = templatefile("${path.module}/pupil-user-data.yaml", {})
-}
-
 
 #### Busy-Ellis
 
@@ -106,7 +81,7 @@ resource "hetznerdns_record" "busy-ellis" {
     ttl= 60
 }
 
-resource "hcloud_rdns" "busy-ellisrevers" {
+resource "hcloud_rdns" "busy-ellis" {
   server_id  = hcloud_server.busy-ellis.id
   ip_address = hcloud_server.busy-ellis.ipv4_address
   dns_ptr    = "busy-ellis.bin-ich-tot.de"
@@ -120,6 +95,10 @@ resource "hcloud_server" "busy-ellis" {
   location    = var.location
   backups     = var.pupil-machine.backups
   ssh_keys    = [var.ssh_public_key_name]
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = false
+  }
   user_data = templatefile("${path.module}/pupil-user-data.yaml", {})
 }
 
@@ -147,44 +126,19 @@ resource "hcloud_server" "amazing-cannon" {
   location    = var.location
   backups     = var.pupil-machine.backups
   ssh_keys    = [var.ssh_public_key_name]
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = false
+  }
   user_data = templatefile("${path.module}/pupil-user-data.yaml", {})
 }
-
-
-####	Heuristic-Joliot
-
-resource "hetznerdns_record" "heuristic-joliot" {
-    zone_id = hetznerdns_zone.bin-ich-tot-de.id
-    name = "heuristic-joliot"
-    value = hcloud_server.heuristic-joliot.ipv4_address
-    type = "A"
-    ttl= 60
-}
-
-resource "hcloud_rdns" "heuristic-joliot" {
-  server_id  = hcloud_server.heuristic-joliot.id
-  ip_address = hcloud_server.heuristic-joliot.ipv4_address
-  dns_ptr    = "heuristic-joliot.bin-ich-tot.de"
-}
-
-
-resource "hcloud_server" "heuristic-joliot" {
-  name        = "heuristic-joliot"
-  image       = var.pupil-machine.image
-  server_type = var.pupil-machine.server_type
-  location    = var.location
-  backups     = var.pupil-machine.backups
-  ssh_keys    = [var.ssh_public_key_name]
-  user_data = templatefile("${path.module}/pupil-user-data.yaml", {})
-}
-
 
 ####	Gracious-Lewin
 
 resource "hetznerdns_record" "gracious-lewin" {
     zone_id = hetznerdns_zone.bin-ich-tot-de.id
     name = "gracious-lewin"
-    value = hcloud_server.olli.ipv4_address
+    value = hcloud_server.gracious-lewin.ipv4_address
     type = "A"
     ttl= 60
 }
@@ -203,6 +157,10 @@ resource "hcloud_server" "gracious-lewin" {
   location    = var.location
   backups     = var.pupil-machine.backups
   ssh_keys    = [var.ssh_public_key_name]
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = false
+  }
   user_data = templatefile("${path.module}/pupil-user-data.yaml", {})
 }
 
@@ -230,6 +188,10 @@ resource "hcloud_server" "stupefied-wilson" {
   location    = var.location
   backups     = var.pupil-machine.backups
   ssh_keys    = [var.ssh_public_key_name]
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = false
+  }
   user_data = templatefile("${path.module}/pupil-user-data.yaml", {})
 }
 
@@ -259,34 +221,10 @@ resource "hcloud_server" "vigilant-mayer" {
   location    = var.location
   backups     = var.pupil-machine.backups
   ssh_keys    = [var.ssh_public_key_name]
-  user_data = templatefile("${path.module}/pupil-user-data.yaml", {})
-}
-
-
-####	Wizardly-Keldysh
-
-resource "hetznerdns_record" "wizardly-keldysh" {
-    zone_id = hetznerdns_zone.bin-ich-tot-de.id
-    name = "wizardly-keldysh"
-    value = hcloud_server.wizardly-keldysh.ipv4_address
-    type = "A"
-    ttl= 60
-}
-
-resource "hcloud_rdns" "wizardly-keldysh" {
-  server_id  = hcloud_server.wizardly-keldysh.id
-  ip_address = hcloud_server.wizardly-keldysh.ipv4_address
-  dns_ptr    = "wizardly-keldysh.bin-ich-tot.de"
-}
-
-
-resource "hcloud_server" "wizardly-keldysh" {
-  name        = "wizardly-keldysh"
-  image       = var.pupil-machine.image
-  server_type = var.pupil-machine.server_type
-  location    = var.location
-  backups     = var.pupil-machine.backups
-  ssh_keys    = [var.ssh_public_key_name]
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = false
+  }
   user_data = templatefile("${path.module}/pupil-user-data.yaml", {})
 }
 
@@ -315,6 +253,10 @@ resource "hcloud_server" "reverent-einstein" {
   location    = var.location
   backups     = var.pupil-machine.backups
   ssh_keys    = [var.ssh_public_key_name]
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = false
+  }
   user_data = templatefile("${path.module}/pupil-user-data.yaml", {})
 }
 
@@ -343,61 +285,9 @@ resource "hcloud_server" "keen-northcutt" {
   location    = var.location
   backups     = var.pupil-machine.backups
   ssh_keys    = [var.ssh_public_key_name]
-  user_data = templatefile("${path.module}/pupil-user-data.yaml", {})
-}
-
-
-####	Blissful-Euclid
-
-resource "hetznerdns_record" "blissful-euclid" {
-    zone_id = hetznerdns_zone.bin-ich-tot-de.id
-    name = "blissful-euclid"
-    value = hcloud_server.blissful-euclid.ipv4_address
-    type = "A"
-    ttl= 60
-}
-
-resource "hcloud_rdns" "blissful-euclid" {
-  server_id  = hcloud_server.blissful-euclid.id
-  ip_address = hcloud_server.blissful-euclid.ipv4_address
-  dns_ptr    = "blissful-euclid.bin-ich-tot.de"
-}
-
-
-resource "hcloud_server" "blissful-euclid" {
-  name        = "blissful-euclid"
-  image       = var.pupil-machine.image
-  server_type = var.pupil-machine.server_type
-  location    = var.location
-  backups     = var.pupil-machine.backups
-  ssh_keys    = [var.ssh_public_key_name]
-  user_data = templatefile("${path.module}/pupil-user-data.yaml", {})
-}
-
-
-####	Quizzical-Aryabhata
-
-resource "hetznerdns_record" "quizzical-aryabhata" {
-    zone_id = hetznerdns_zone.bin-ich-tot-de.id
-    name = "quizzical-aryabhata"
-    value = hcloud_server.quizzical-aryabhata.ipv4_address
-    type = "A"
-    ttl= 60
-}
-
-resource "hcloud_rdns" "quizzical-aryabhata" {
-  server_id  = hcloud_server.quizzical-aryabhata.id
-  ip_address = hcloud_server.quizzical-aryabhata.ipv4_address
-  dns_ptr    = "quizzical-aryabhata.bin-ich-tot.de"
-}
-
-
-resource "hcloud_server" "quizzical-aryabhata" {
-  name        = "quizzical-aryabhata"
-  image       = var.pupil-machine.image
-  server_type = var.pupil-machine.server_type
-  location    = var.location
-  backups     = var.pupil-machine.backups
-  ssh_keys    = [var.ssh_public_key_name]
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = false
+  }
   user_data = templatefile("${path.module}/pupil-user-data.yaml", {})
 }
